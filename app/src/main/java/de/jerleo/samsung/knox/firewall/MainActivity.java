@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean hasActiveLicense() {
         try {
+            Class.forName("android.app.enterprise.license.EnterpriseLicenseManager");
             elm = EnterpriseLicenseManager.getInstance(this);
         } catch (Exception e) {
             return false;
