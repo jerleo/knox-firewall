@@ -1,0 +1,37 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="de.jerleo.samsung.knox.firewall.MainActivity">
+
+    <item
+        android:id="@+id/action_admin"
+        android:orderInCategory="100"
+        android:title="@string/administrator_activation"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_license"
+        android:orderInCategory="100"
+        android:title="@string/license_activation"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_toggle_select"
+        android:orderInCategory="100"
+        android:title="@string/apps_toggle_select"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_allow_selected"
+        android:orderInCategory="100"
+        android:title="@string/apps_allow_selected"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_deny_selected"
+        android:orderInCategory="100"
+        android:title="@string/apps_deny_selected"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_apply_rules"
+        android:orderInCategory="100"
+        android:title="@string/firewall_rules_apply"
+        app:showAsAction="never" />
+
+</menu>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="administrator_activation">Administrator aktivieren</string>
+    <string name="administrator_device">Geräteadministrator</string>
+    <string name="administrator_disabled">Deaktiviert</string>
+    <string name="administrator_disable_requested">Existierende Firewall-Regeln bleiben bestehen.</string>
+    <string name="administrator_enabled">Aktiviert</string>
+    <string name="app_description">Mobile Daten einschränken</string>
+    <string name="app_name">KNOX Firewall</string>
+    <string name="apps_allow_selected">Auswahl erlauben</string>
+    <string name="apps_deny_selected">Auswahl verweigern</string>
+    <string name="apps_toggle_select">Auswahl umkehren</string>
+    <string name="firewall_rules_apply">Regeln anwenden</string>
+    <string name="firewall_rules_complete">Erfolgreich abgeschlossen</string>
+    <string name="firewall_rules_create">Regeln werden erstellt ...</string>
+    <string name="license_activate">Aktivieren</string>
+    <string name="license_activation_fail">Aktivierung fehlgeschlagen</string>
+    <string name="license_activation">Lizenz aktivieren</string>
+    <string name="license_activation_success">Aktivierung erfolgreich</string>
+    <string name="license_key_invalid">Ungültiger Lizenzschlüssel</string>
+    <string name="license_key_paste">Bitte einen gültigen Lizenzschlüssel einfügen.</string>
+    <string name="password_changed">Kennwort geändert</string>
+    <string name="password_failed">Kennwort fehlgeschlagen</string>
+    <string name="password_succeeded">Kennwort erfolgreich</string>
+    <string-array name="tab_titles">
+        <item>Erlauben</item>
+        <item>Verweigern</item>
+    </string-array>
+
+</resources>
