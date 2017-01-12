@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.jerleo.samsung.knox.firewall">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="de.jerleo.samsung.knox.firewall">
 
-    <uses-permission android:name="android.permission.sec.MDM_FIREWALL" />
+    <uses-permission android:name="android.permission.sec.MDM_FIREWALL"/>
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
 
         <receiver
             android:name=".AdminReceiver"
@@ -18,18 +20,19 @@
             android:permission="android.permission.BIND_DEVICE_ADMIN">
             <meta-data
                 android:name="android.app.device_admin"
-                android:resource="@xml/device_admin_receiver" />
+                android:resource="@xml/device_admin_receiver"/>
 
             <intent-filter>
-                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED"/>
             </intent-filter>
         </receiver>
 
         <receiver
             android:name=".LicenseReceiver"
-            android:enabled="true">
+            android:enabled="true"
+            tools:ignore="ExportedReceiver">
             <intent-filter>
-                <action android:name="edm.intent.action.license.status" />
+                <action android:name="edm.intent.action.license.status"/>
             </intent-filter>
         </receiver>
 
@@ -39,8 +42,8 @@
             android:theme="@style/AppTheme.NoActionBar">
 
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
     </application>

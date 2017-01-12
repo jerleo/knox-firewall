@@ -6,8 +6,8 @@ android {
 
     defaultConfig {
         applicationId "de.jerleo.samsung.knox.firewall"
-        minSdkVersion 19
-        targetSdkVersion 21
+        minSdkVersion 21
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
     }

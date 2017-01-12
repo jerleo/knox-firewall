@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AppAdapter extends ArrayAdapter<AppModel> {
+class AppAdapter extends ArrayAdapter<AppModel> {
 
     private final Context context;
     private final List<AppModel> apps;
@@ -22,8 +22,10 @@ public class AppAdapter extends ArrayAdapter<AppModel> {
     private AppAdapter other;
     private List<Integer> index;
 
+    @SuppressWarnings("SameParameterValue")
     public AppAdapter(Context context, int resource,
                       List<AppModel> apps, String title, boolean denied) {
+
         super(context, resource, apps);
         this.context = context;
         this.denied = denied;
@@ -32,23 +34,8 @@ public class AppAdapter extends ArrayAdapter<AppModel> {
         updateIndex();
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    private void updateIndex() {
-        // Update indexes for apps on current tab
-        index = new ArrayList<Integer>();
-        for (AppModel app : apps)
-            if (app.isDenied() == denied)
-                index.add(apps.indexOf(app));
-    }
-
-    public void setOther(AppAdapter other) {
-        this.other = other;
-    }
-
     public void denySelection(boolean deny) {
+
         boolean changed = false;
         for (Integer ix : index) {
             AppModel app = apps.get(ix);
@@ -65,28 +52,21 @@ public class AppAdapter extends ArrayAdapter<AppModel> {
         }
     }
 
-    public void toggleSelection() {
-        for (Integer ix : index) {
-            AppModel app = apps.get(ix);
-            app.setSelected(!app.isSelected());
-        }
-        notifyDataSetChanged();
-    }
-
-    @Override
-    public void notifyDataSetChanged() {
-        this.updateIndex();
-        super.notifyDataSetChanged();
-    }
-
     @Override
     public int getCount() {
+
         return index.size();
     }
 
     @Override
     public AppModel getItem(int position) {
+
         return apps.get(index.get(position));
+    }
+
+    public String getTitle() {
+
+        return title;
     }
 
     @Override
@@ -123,7 +103,37 @@ public class AppAdapter extends ArrayAdapter<AppModel> {
         return row;
     }
 
+    @Override
+    public void notifyDataSetChanged() {
+
+        this.updateIndex();
+        super.notifyDataSetChanged();
+    }
+
+    public void setOther(AppAdapter other) {
+
+        this.other = other;
+    }
+
+    public void toggleSelection() {
+
+        for (Integer ix : index) {
+            AppModel app = apps.get(ix);
+            app.setSelected(!app.isSelected());
+        }
+        notifyDataSetChanged();
+    }
+
+    private void updateIndex() {
+        // Update indexes for apps on current tab
+        index = new ArrayList<>();
+        for (AppModel app : apps)
+            if (app.isDenied() == denied)
+                index.add(apps.indexOf(app));
+    }
+
     private static class ViewHolder {
+
         public CheckBox selected;
         public ImageView icon;
         public TextView label;

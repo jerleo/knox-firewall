@@ -3,8 +3,7 @@
 
     <string name="administrator_activation">Administrator Activation</string>
     <string name="administrator_device">Device Administrator</string>
-    <string name="administrator_disabled">Disabled</string>
-    <string name="administrator_disable_requested">Existing firewall will remain active.</string>
+    <string name="administrator_disable_requested">Existing firewall rules will remain active.</string>
     <string name="administrator_enabled">Enabled</string>
     <string name="app_description">Restrict Mobile Data</string>
     <string name="app_name">KNOX Firewall</string>
@@ -13,7 +12,7 @@
     <string name="apps_toggle_select">Toggle Selection</string>
     <string name="firewall_rules_apply">Apply Rules</string>
     <string name="firewall_rules_complete">Completed Successfully</string>
-    <string name="firewall_rules_create">Creating Rules ...</string>
+    <string name="firewall_rules_create">Creating Rules …</string>
     <string name="license_activate">Activate</string>
     <string name="license_activation_fail">Activation Failed</string>
     <string name="license_activation">License Activation</string>

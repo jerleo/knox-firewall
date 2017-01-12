@@ -8,12 +8,9 @@ import android.widget.Toast;
 
 public class LicenseReceiver extends BroadcastReceiver {
 
-    void showToast(Context context, CharSequence msg) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-    }
-
     @Override
     public void onReceive(Context context, Intent intent) {
+
         String action = intent.getAction();
         if (action.equals(EnterpriseLicenseManager.ACTION_LICENSE_STATUS)) {
             String result = intent.getStringExtra(EnterpriseLicenseManager.EXTRA_LICENSE_STATUS);
@@ -22,5 +19,10 @@ public class LicenseReceiver extends BroadcastReceiver {
                     R.string.license_activation_success);
             showToast(context, context.getString(message));
         }
+    }
+
+    private void showToast(Context context, CharSequence msg) {
+
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 }

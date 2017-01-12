@@ -1,5 +1,6 @@
 package de.jerleo.samsung.knox.firewall;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.app.admin.DevicePolicyManager;
 import android.app.enterprise.license.EnterpriseLicenseManager;
@@ -32,102 +33,16 @@ public class MainActivity extends AppCompatActivity {
     private final static int NUMBER_OF_TABS = 2;
 
     private static ComponentName admin;
-    private static DevicePolicyManager dpm;
     private static EnterpriseLicenseManager elm;
 
     private static AppAdapter[] adapters;
-    private static List<AppModel> apps;
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        // Rules only available with administrator and license
-        if (hasActiveAdministrator() && hasActiveLicense())
-            Firewall.initialize(this);
-
-        // Initialize static member
-        if (adapters == null) {
-            List<AppModel> apps = Firewall.getApps(this);
-            String[] titles = getResources().getStringArray(R.array.tab_titles);
-
-            // Create adapters for allowed and denied apps
-            adapters = new AppAdapter[NUMBER_OF_TABS];
-            adapters[0] = new AppAdapter(this, R.id.app_row, apps, titles[0], false);
-            adapters[1] = new AppAdapter(this, R.id.app_row, apps, titles[1], true);
-
-            // Link the adpaters
-            adapters[0].setOther(adapters[1]);
-            adapters[1].setOther(adapters[0]);
-        }
-
-        setContentView(R.layout.main);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
-    }
-
-    private void activateAdministrator() {
-        Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, admin);
-        startActivityForResult(intent, DEVICE_ADMIN_ADD_RESULT_ENABLE);
-    }
-
-    private void activateLicense() {
-        final EditText edit = new EditText(MainActivity.this);
-        final Toast invalid = Toast.makeText(this, getString(R.string.license_key_invalid),
-                Toast.LENGTH_LONG);
-
-        AlertDialog.Builder alert = new AlertDialog.Builder(this)
-                .setTitle(R.string.license_activation)
-                .setMessage(R.string.license_key_paste)
-                .setView(edit)
-                .setPositiveButton(R.string.license_activate, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        String key = edit.getText().toString();
-
-                        // Check for valid key length
-                        if (key.length() == 128)
-
-                            // Activate license and restart app
-                            elm.activateLicense(key);
-
-                        else
-                            invalid.show();
-                    }
-                });
-        alert.show();
-    }
-
-    private boolean hasActiveAdministrator() {
-        admin = new ComponentName(MainActivity.this, AdminReceiver.class);
-        dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
-        return dpm.isAdminActive(admin);
-    }
-
-    private boolean hasActiveLicense() {
-        try {
-            Class.forName("android.app.enterprise.license.EnterpriseLicenseManager");
-            elm = EnterpriseLicenseManager.getInstance(this);
-        } catch (Exception e) {
-            return false;
-        }
-        return (checkCallingOrSelfPermission("android.permission.sec.MDM_FIREWALL") ==
-                PackageManager.PERMISSION_GRANTED);
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         getMenuInflater().inflate(R.menu.menu, menu);
 
         boolean allowed = (mViewPager.getCurrentItem() == 0);
@@ -196,6 +111,41 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void activateAdministrator() {
+
+        Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, admin);
+        startActivityForResult(intent, DEVICE_ADMIN_ADD_RESULT_ENABLE);
+    }
+
+    private void activateLicense() {
+
+        final EditText edit = new EditText(MainActivity.this);
+        final Toast invalid = Toast.makeText(this, getString(R.string.license_key_invalid),
+                Toast.LENGTH_LONG);
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this)
+                .setTitle(R.string.license_activation)
+                .setMessage(R.string.license_key_paste)
+                .setView(edit)
+                .setPositiveButton(R.string.license_activate, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                        String key = edit.getText().toString();
+
+                        // Check for valid key length
+                        if (key.length() == 128)
+
+                            // Activate license and restart app
+                            elm.activateLicense(key);
+
+                        else
+                            invalid.show();
+                    }
+                });
+        alert.show();
+    }
+
     private void applyRules() {
 
         // Get context
@@ -211,10 +161,11 @@ public class MainActivity extends AppCompatActivity {
         progress.show();
 
         // Handler to dismiss progress
-        final Handler handler = new Handler() {
+        @SuppressLint("HandlerLeak") final Handler handler = new Handler() {
 
             @Override
             public void handleMessage(Message msg) {
+
                 super.handleMessage(msg);
                 progress.dismiss();
                 completed.show();
@@ -226,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void run() {
+
                 progress.setMessage(getString(R.string.firewall_rules_create));
                 Firewall.createRules(context);
                 handler.sendMessage(handler.obtainMessage());
@@ -233,19 +185,41 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
+    private boolean hasActiveAdministrator() {
+
+        admin = new ComponentName(MainActivity.this, AdminReceiver.class);
+        DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
+        return dpm.isAdminActive(admin);
+    }
+
+    private boolean hasActiveLicense() {
+
+        try {
+            Class.forName("android.app.enterprise.license.EnterpriseLicenseManager");
+            elm = EnterpriseLicenseManager.getInstance(this);
+        } catch (Exception e) {
+            return false;
+        }
+        return (checkCallingOrSelfPermission("android.permission.sec.MDM_FIREWALL") ==
+                PackageManager.PERMISSION_GRANTED);
+    }
+
     private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
+
             super(fm);
         }
 
         @Override
         public int getCount() {
+
             return NUMBER_OF_TABS;
         }
 
         @Override
         public Fragment getItem(int position) {
+
             AppList list = new AppList();
             list.setListAdapter(adapters[position]);
 
@@ -256,7 +230,45 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
+
             return adapters[position].getTitle();
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        // Rules only available with administrator and license
+        if (hasActiveAdministrator() && hasActiveLicense())
+            Firewall.initialize(this);
+
+        // Initialize static member
+        if (adapters == null) {
+            List<AppModel> apps = Firewall.getApps(this);
+            String[] titles = getResources().getStringArray(R.array.tab_titles);
+
+            // Create adapters for allowed and denied apps
+            adapters = new AppAdapter[NUMBER_OF_TABS];
+            adapters[0] = new AppAdapter(this, R.id.app_row, apps, titles[0], false);
+            adapters[1] = new AppAdapter(this, R.id.app_row, apps, titles[1], true);
+
+            // Link the adapters
+            adapters[0].setOther(adapters[1]);
+            adapters[1].setOther(adapters[0]);
+        }
+
+        setContentView(R.layout.main);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
     }
 }

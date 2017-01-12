@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/app_row"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:descendantFocusability="blocksDescendants">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/app_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:descendantFocusability="blocksDescendants">
 
     <CheckBox
         android:id="@+id/app_selected"
         android:layout_width="38dp"
         android:layout_height="38dp"
         android:clickable="false"
-        android:padding="0px" />
+        android:padding="0px"/>
 
     <ImageView
         android:id="@+id/app_icon"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_toRightOf="@id/app_selected"
-        android:src="@android:drawable/radiobutton_off_background" />
+        android:src="@android:drawable/radiobutton_off_background"
+        tools:ignore="ContentDescription,RtlHardcoded"/>
 
     <TextView
         android:id="@+id/app_label"
@@ -26,8 +28,8 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/app_icon"
         android:paddingLeft="5dp"
-        android:text="App Label"
-        android:textIsSelectable="false" />
+        android:textIsSelectable="false"
+        tools:ignore="RtlHardcoded,RtlSymmetry"/>
 
     <TextView
         android:id="@+id/app_package_name"
@@ -36,9 +38,9 @@
         android:layout_alignLeft="@id/app_label"
         android:layout_below="@id/app_label"
         android:paddingLeft="5dp"
-        android:text="Package Name"
         android:textIsSelectable="false"
-        android:textSize="5pt" />
+        android:textSize="5pt"
+        tools:ignore="RtlHardcoded,RtlSymmetry"/>
 
 </RelativeLayout>
 
